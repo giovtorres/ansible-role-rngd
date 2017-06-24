@@ -1,0 +1,3 @@
+---
+rngd_enabled: true
+rngd_device: /dev/urandom

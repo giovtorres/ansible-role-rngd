@@ -1,0 +1,14 @@
+galaxy_info:
+  author: Giovanni Torres
+  description: Installs and configures the Random Number Generator Daemon (rngd).
+  license: license BSD
+  min_ansible_version: 1.6
+  platforms:
+  - name: EL
+    versions:
+    - 6
+    - 7
+  galaxy_tags:
+  - system
+  - rng
+dependencies: []

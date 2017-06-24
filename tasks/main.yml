@@ -1,0 +1,55 @@
+---
+- name: Install dependencies.
+  yum:
+    name: libselinux-python
+    state: installed
+  when: ansible_distribution_major_version|int < 7
+
+- name: Install rng-tools
+  package:
+    name: rng-tools
+    state: installed
+  when: ansible_virtualization_role == 'guest'
+
+- name: Configure rngd to use random number source device
+  template:
+    src: rngd.sysconfig.j2
+    dest: /etc/sysconfig/rngd
+    owner: root
+    group: root
+    mode: 0644
+  notify:
+    - restart rngd
+  when:
+    - ansible_virtualization_role == 'guest'
+
+- name: Configure rngd to use random number source device
+  template:
+    src: rngd.service.j2
+    dest: /etc/systemd/system/rngd.service
+    owner: root
+    group: root
+    mode: 0644
+  notify:
+    - daemon reload
+  when:
+    - ansible_distribution_major_version|int >= 7
+    - ansible_virtualization_role == 'guest'
+
+- name: Ensure that the rngd service is enabled and started at boot time
+  service:
+    name: rngd
+    enabled: yes
+    state: started
+  when:
+    - ansible_virtualization_role == 'guest'
+    - rngd_enabled
+
+- name: Ensure that the rngd service is disabled and stopped at boot time
+  service:
+    name: rngd
+    enabled: no
+    state: stopped
+  when:
+    - ansible_virtualization_role == 'guest'
+    - not rngd_enabled
