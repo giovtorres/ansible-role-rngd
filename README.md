@@ -1,6 +1,8 @@
 Ansible Role: rngd
 ==================
 
+[![Build Status](https://travis-ci.org/giovtorres/ansible-role-rngd.svg?branch=master)](https://travis-ci.org/giovtorres/ansible-role-rngd)
+
 Installs the random number generator daemon (rngd) on virtual guests to feed
 random data from a device to the kernel entropy pool.
 
